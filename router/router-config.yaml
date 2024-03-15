@@ -1,0 +1,9 @@
+authorization:
+  directives:
+    enabled: true
+
+coprocessor:
+  url: http://localhost:3007
+  supergraph:
+    request:
+      context: true
