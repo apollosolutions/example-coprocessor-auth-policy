@@ -1,5 +1,5 @@
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.6", import: ["@policy"])
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.6", import: [{ name: "@policy", as: "@customPolicy"}])
 
 type Query {
-  hello: String @policy(policies: [["roles:user"]])
+  hello: String @customPolicy(policies: [["roles:user"]])
 }
