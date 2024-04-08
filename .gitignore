@@ -131,3 +131,6 @@ dist
 
 router/router
 .env
+
+# IDE
+.idea
