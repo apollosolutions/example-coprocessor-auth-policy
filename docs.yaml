@@ -1,0 +1,11 @@
+name: example-coprocessor-auth-policy
+description: A demonstration of how to set up a coprocessor with the router to
+  evaluate policy-based authorization with the `@policy` directive. Note that
+  this repo currently does not enforce authentication via a JWT or other token
+  for the sake of simplicity. In production code, you would likely have a
+  consumer-provided token in a header, which would be passed down to the auth
+  service.
+tags:
+  - Coprocessor
+  - Authentication
+  - Router
