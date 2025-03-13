@@ -6,4 +6,4 @@ coprocessor:
   url: http://localhost:3007
   supergraph:
     request:
-      context: true
+      context: all
