@@ -64,5 +64,5 @@ app.post("/", express.json(), async (req, res) => {
 });
 
 app.listen(3007, () => {
-  console.log("🚀 Server running at http://localhost:3007");
+  console.log("🚀 Coprocessor running at http://localhost:3007");
 });
