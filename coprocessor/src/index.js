@@ -34,7 +34,10 @@ const processSupergraphRequestStage = async (payload) => {
     }),
   }).then((res) => res.json());
 
-  if (!response.result || !response.result.auth_demo || !response.result.auth_demo.policies) return payload;
+  if (!response.result || !response.result.auth_demo || !response.result.auth_demo.policies) {
+    console.warn("⚠️ Missing expected policy data in OPA response:", response);
+    return payload;
+  }
 
   Object.entries(response.result.auth_demo.policies).forEach(([key, value]) => {
     console.log("🚀 Setting policy", key, value);
