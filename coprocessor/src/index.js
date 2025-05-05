@@ -1,6 +1,8 @@
 import express from "express";
 import fetch from "node-fetch";
 
+const POLICY_KEY ="apollo::authorization::required_policies";
+
 const app = express();
 
 /**
@@ -8,27 +10,35 @@ const app = express();
  * In a real code base, you would likely have a consumer provided token in a header which would be passed down to the "auth service", not the hard coding that this example does
  */
 const processSupergraphRequestStage = async (payload) => {
-  // If there are no policies to evaluate, return the payload as is
-  if (!payload.context.entries["apollo::authorization::required_policies"]) {
-    return payload;
+  if (!payload.context.entries[POLICY_KEY]) {
+    console.log("🚀 No policies found");
+    return payload
   }
+
   // Get the unevaluated policies
-  const policies = Object.keys(payload.context.entries["apollo::authorization::required_policies"]);
+  const policies = Object.keys(payload.context.entries[POLICY_KEY]);
 
   // Send the list of policies downstream to the auth service
-  const response = await fetch("http://localhost:3005/policy/evaluate", {
+  const response = await fetch("http://localhost:8181/v1/data", {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      policies,
+      input: {
+        headers: {
+          authorization: payload.headers.authorization ? payload.headers.authorization[0] : null
+        },
+        policies,
+      },
     }),
   }).then((res) => res.json());
 
-  // Map the evaluated policies back into the payload for the Router
-  response.policies.forEach((policy) => {
-    payload.context.entries["apollo::authorization::required_policies"][policy.scope] = policy.result;
+  if (!response.result || !response.result.auth_demo || !response.result.auth_demo.policies) return payload;
+
+  Object.entries(response.result.auth_demo.policies).forEach(([key, value]) => {
+    console.log("🚀 Setting policy", key, value);
+    payload.context.entries[POLICY_KEY][key] = value;
   });
 
   return payload;
@@ -41,6 +51,9 @@ app.post("/", express.json(), async (req, res) => {
   switch (payload.stage) {
     case "SupergraphRequest":
       response = await processSupergraphRequestStage(payload);
+      break;
+    default:
+      console.warn("⚠️ Unknown stage", payload.stage);
       break;
   }
 
