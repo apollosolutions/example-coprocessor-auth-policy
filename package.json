@@ -1,0 +1,31 @@
+{
+  "name": "example-coprocessor-auth-policy",
+  "version": "1.0.0",
+  "workspaces": [
+    "subgraph",
+    "coprocessor"
+  ],
+  "description": "This repository demonstrates how to setup a coprocessor with the Router to evaluate policy-based authorization with the `@policy` directive. Note that this repo currently does not enforce authentication via a JWT or other token for the sake of simplicity. In a real code base, you would likely have a consumer provided token in a header which would be passed down to the \"auth service\", not the hard coding that this example does.",
+  "main": "index.js",
+  "scripts": {
+    "dev:router": "cd router && ./start_router.sh",
+    "dev:subgraph": "npm run dev -w subgraph",
+    "dev:coprocessor": "npm run dev -w coprocessor",
+    "dev:opa": "opa run --addr localhost:8181 -w -s opa-policies",
+    "dev": "npm-run-all --parallel dev:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apollosolutions/example-coprocessor-auth-policy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/apollosolutions/example-coprocessor-auth-policy/issues"
+  },
+  "homepage": "https://github.com/apollosolutions/example-coprocessor-auth-policy#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
