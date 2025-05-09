@@ -1,3 +1,4 @@
+# $schema: configuration_schema.json
 authorization:
   directives:
     enabled: true
