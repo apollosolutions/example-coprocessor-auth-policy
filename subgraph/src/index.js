@@ -9,9 +9,9 @@ import resolvers from "./resolvers.js";
 
 const typeDefs = parse(
   fs
-    .readdirSync(path.resolve("src/schema"))
+    .readdirSync(path.resolve("src"))
     .filter((file) => path.extname(file) === ".graphql")
-    .map((file) => fs.readFileSync(path.resolve("src/schema", file), "utf-8"))
+    .map((file) => fs.readFileSync(path.resolve("src", file), "utf-8"))
     .join("\n")
 );
 
